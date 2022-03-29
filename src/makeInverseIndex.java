@@ -17,7 +17,7 @@ public class makeInverseIndex {
     }
 
     public void mkHashMapFile() throws IOException {
-        HashMap[] hashs = new HashMap[N];
+        HashMap[] hashs = new HashMap[N]; //5개의 문장별 hashmap배열
         File file = new File("C:\\Users\\dlgus\\OneDrive\\바탕 화면\\SimpleLR\\src\\index.xml");
         Document fileDoc = Jsoup.parse(file, "UTF-8");
         Elements els = fileDoc.select("doc");
@@ -33,23 +33,7 @@ public class makeInverseIndex {
             hashs[i]=tempHash;
         }
 
-        FileOutputStream fileStream = new FileOutputStream("src/index.post");
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileStream);
-        objectOutputStream.writeObject(hashs);
-        objectOutputStream.close();
-    }
-
-    public void rdInverseIndex() throws IOException, ClassNotFoundException {
-        FileInputStream fileStream = new FileInputStream("src/index.post");
-        ObjectInputStream objectInputStream = new ObjectInputStream(fileStream);
-
-        Object object = objectInputStream.readObject();
-        objectInputStream.close();
-
-        HashMap[] hashs = (HashMap[]) object;
-        double tfxy = 0.0;
-        double dfxy= 0.0;
-        HashMap All = new HashMap();
+        HashMap All = new HashMap(); //5개의 파일에서 나온 단어 총정리.
         for(int i=0;i<hashs.length;i++){
             Iterator<String> it = hashs[i].keySet().iterator();
             while(it.hasNext()){
@@ -64,12 +48,13 @@ public class makeInverseIndex {
                 }
             }
         }
+
+        HashMap<String,String[]> resultHash = new HashMap<>(); //.post에 저장될 hashmap, String에 단어 이름 String[]에 파일별 가중치.
+
         Iterator<String> it = All.keySet().iterator();
         while(it.hasNext()){
             String key = it.next();
             double value = (double) All.get(key);
-            String answer = "";
-            answer+=key+" -> ";
             double[] counts = new double[5];
             double totalHave = 0;
             for(int i=0;i<hashs.length;i++){
@@ -82,12 +67,41 @@ public class makeInverseIndex {
                     continue;
                 }
             }
+            String[] tmpWeight= new String[5];
             for(int i=0;i<counts.length;i++){
-                answer+= Integer.toString(i)+" ";
                 double weight = counts[i]*Math.log(5.0/totalHave);
-                answer+= String.format("%.2f",weight)+" ";
+                tmpWeight[i]=String.format("%.2f",weight);
             }
+            resultHash.put(key,tmpWeight);
+        }
 
+        FileOutputStream fileStream = new FileOutputStream("src/index.post");
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileStream);
+        objectOutputStream.writeObject(resultHash);
+        objectOutputStream.close();
+    }
+
+    public void rdInverseIndex() throws IOException, ClassNotFoundException {
+        //.post에 저장된 hashmap을 불러와서 출력하기.
+        FileInputStream fileStream = new FileInputStream("src/index.post");
+        ObjectInputStream objectInputStream = new ObjectInputStream(fileStream);
+
+        Object object = objectInputStream.readObject();
+        objectInputStream.close();
+
+        HashMap<String,String[]> hashs = (HashMap) object;
+
+
+        Iterator<String> it = hashs.keySet().iterator();
+        while(it.hasNext()){
+            String key = it.next();
+            String[] value = hashs.get(key);
+            String answer = "";
+            answer+=key+" -> ";
+
+            for(int i=0;i<value.length;i++){
+                answer+= " "+Integer.toString(i)+" "+value[i];
+            }
             System.out.println(answer);
         }
     }
