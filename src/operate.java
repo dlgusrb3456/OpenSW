@@ -10,7 +10,7 @@ public class operate {
         String path = args[3];
 
         if(command.equals("-i")){ //config: java kuir -i ./src/index.xml
-            makeInverseIndex mII = new makeInverseIndex(path);
+            indexer mII = new indexer(path);
             mII.mkHashMapFile();
         } else if (command.equals("-k")) { //config: java kuir -k ./src/collection.xml
             makeKeyword mK = new makeKeyword(path);

@@ -1,26 +1,22 @@
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.snu.ids.kkma.index.Keyword;
-import org.snu.ids.kkma.index.KeywordExtractor;
-import org.snu.ids.kkma.index.KeywordList;
-import org.w3c.dom.Element;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class makeInverseIndex {
+public class indexer {
     int N = 5;
     private String path ="";
-    public makeInverseIndex(String path){
+    public indexer(String path){
         this.path=path;
     }
-    public makeInverseIndex(){
+    public indexer(){
 
     }
 
-    public void mkHashMapFile() throws IOException {
+    public void mkHashMapFile() throws IOException, ClassNotFoundException {
         HashMap[] hashs = new HashMap[N]; //5개의 문장별 hashmap배열
         File file = new File(path);
         Document fileDoc = Jsoup.parse(file, "UTF-8");
@@ -85,6 +81,7 @@ public class makeInverseIndex {
         FileOutputStream fileStream = new FileOutputStream("index.post");
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileStream);
         objectOutputStream.writeObject(resultHash);
+        rdInverseIndex(resultHash);
         objectOutputStream.close();
     }
 
