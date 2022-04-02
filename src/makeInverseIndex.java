@@ -12,13 +12,17 @@ import java.util.Iterator;
 
 public class makeInverseIndex {
     int N = 5;
+    private String path ="";
     public makeInverseIndex(String path){
+        this.path=path;
+    }
+    public makeInverseIndex(){
 
     }
 
     public void mkHashMapFile() throws IOException {
         HashMap[] hashs = new HashMap[N]; //5개의 문장별 hashmap배열
-        File file = new File("C:\\Users\\dlgus\\OneDrive\\바탕 화면\\SimpleLR\\src\\index.xml");
+        File file = new File(path);
         Document fileDoc = Jsoup.parse(file, "UTF-8");
         Elements els = fileDoc.select("doc");
         for(int i=0;i<els.size();i++){
@@ -49,8 +53,11 @@ public class makeInverseIndex {
             }
         }
 
-        HashMap<String,String[]> resultHash = new HashMap<>(); //.post에 저장될 hashmap, String에 단어 이름 String[]에 파일별 가중치.
-
+        HashMap<String,String[]> resultHash = new HashMap<>();
+        //.post에 저장될 hashmap, String에 단어 이름 String[]에 파일별 가중치.
+        /*
+        <밀 ,[0.00, 0.00, 0.00, 0.00, 0.00]>
+         */
         Iterator<String> it = All.keySet().iterator();
         while(it.hasNext()){
             String key = it.next();
@@ -75,21 +82,21 @@ public class makeInverseIndex {
             resultHash.put(key,tmpWeight);
         }
 
-        FileOutputStream fileStream = new FileOutputStream("src/index.post");
+        FileOutputStream fileStream = new FileOutputStream("index.post");
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileStream);
         objectOutputStream.writeObject(resultHash);
         objectOutputStream.close();
     }
 
-    public void rdInverseIndex() throws IOException, ClassNotFoundException {
+    public void rdInverseIndex(Object object) throws IOException, ClassNotFoundException {
         //.post에 저장된 hashmap을 불러와서 출력하기.
-        FileInputStream fileStream = new FileInputStream("src/index.post");
+        FileInputStream fileStream = new FileInputStream("index.post");
         ObjectInputStream objectInputStream = new ObjectInputStream(fileStream);
 
-        Object object = objectInputStream.readObject();
+        Object object1 = objectInputStream.readObject(); //여기서 찾은 object
         objectInputStream.close();
 
-        HashMap<String,String[]> hashs = (HashMap) object;
+        HashMap<String,String[]> hashs = (HashMap) object; //받아온 object
 
 
         Iterator<String> it = hashs.keySet().iterator();
