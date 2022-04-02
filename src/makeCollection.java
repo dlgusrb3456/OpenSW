@@ -50,7 +50,7 @@ public class makeCollection {
         transformer.setOutputProperty(OutputKeys.ENCODING,"UTF-8");
 
         DOMSource source = new DOMSource(doc);
-        StreamResult result = new StreamResult(new FileOutputStream(new File("src/collection.xml")));
+        StreamResult result = new StreamResult(new FileOutputStream(new File("collection.xml")));
         transformer.transform(source,result);
     }
 }

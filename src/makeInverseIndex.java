@@ -82,7 +82,7 @@ public class makeInverseIndex {
             resultHash.put(key,tmpWeight);
         }
 
-        FileOutputStream fileStream = new FileOutputStream("src/index.post");
+        FileOutputStream fileStream = new FileOutputStream("index.post");
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileStream);
         objectOutputStream.writeObject(resultHash);
         objectOutputStream.close();
@@ -90,7 +90,7 @@ public class makeInverseIndex {
 
     public void rdInverseIndex(Object object) throws IOException, ClassNotFoundException {
         //.post에 저장된 hashmap을 불러와서 출력하기.
-        FileInputStream fileStream = new FileInputStream("src/index.post");
+        FileInputStream fileStream = new FileInputStream("index.post");
         ObjectInputStream objectInputStream = new ObjectInputStream(fileStream);
 
         Object object1 = objectInputStream.readObject(); //여기서 찾은 object

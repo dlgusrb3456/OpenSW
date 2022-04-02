@@ -15,7 +15,7 @@ public class operate {
         } else if (command.equals("-k")) { //config: java kuir -k ./src/collection.xml
             makeKeyword mK = new makeKeyword(path);
             mK.mkKeyword();
-        }else if(command.equals("-c")){ //config: java kuir -c ./dkfj
+        }else if(command.equals("-c")){ //config: java kuir -c ./data
             makeCollection mC = new makeCollection(path);
             mC.mkCollecton();
         }
