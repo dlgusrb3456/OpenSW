@@ -72,7 +72,10 @@ public class searcher {
                     }
                     k++;
                     String title = getTitle(entry.getKey());
-                    answer += Integer.toString(k)+"등:"+title+" ";
+                    if(entry.getValue() != 0.0){
+                        answer += Integer.toString(k)+"등:"+title+", 유사도: "+entry.getValue()+" / ";
+                    }
+
                 }
                 System.out.println(answer);
 
