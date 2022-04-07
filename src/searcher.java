@@ -21,7 +21,7 @@ public class searcher {
         return dir.listFiles();
     }
 
-    public void mkSearcher() throws IOException, ClassNotFoundException {
+    public void InnerProduct() throws IOException, ClassNotFoundException {
         //get index.post file
         FileInputStream fileStream = new FileInputStream(path);
         ObjectInputStream objectInputStream = new ObjectInputStream(fileStream);

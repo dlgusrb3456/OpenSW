@@ -2,7 +2,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 
-public class operate {
+public class kuir {
 
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, ParserConfigurationException, TransformerException {
@@ -21,7 +21,7 @@ public class operate {
         }
         else if(command.equals("-s")){
             searcher sc = new searcher(path,args[5]);
-            sc.mkSearcher();
+            sc.InnerProduct();
         }
         else {
             System.out.println("none");
