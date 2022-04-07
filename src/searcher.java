@@ -63,15 +63,40 @@ public class searcher {
         }
         ArrayList<Double> resultSimInEachFile = new ArrayList<Double>();
 
+        //check findSim arrayList;
+//        for(int i=0;i<findSim.size();i++){
+//            for(int j=0;j<findSim.get(i).length;j++){
+//                System.out.print(findSim.get(i)[j]+"//");
+//            }
+//            System.out.println();
+//        }
+
+
         if(findSim.size()>=0){
             for(int i=1;i<findSim.get(0).length;i++){
                 Double tmpWeight = 0.0;
+                Double cntSquare=0.0;
+                Double weightSquare =0.0;
                 for(int j=0;j<findSim.size();j++){
-                    tmpWeight += findSim.get(j)[0]*findSim.get(j)[i];
+                    tmpWeight += findSim.get(j)[0]*findSim.get(j)[i]; //여기까지만 한 값이 innerProduct
+                    cntSquare += Math.pow(findSim.get(j)[0],2);
+                    weightSquare += Math.pow(findSim.get(j)[i],2);
                 }
-                resultSimInEachFile.add(tmpWeight);
+                //resultSimInEachFile.add(tmpWeight); //이 값은 innerProduct
+//                System.out.println("cntSquare: "+Math.sqrt(cntSquare));
+//                System.out.println("weightSquare: "+Math.sqrt(weightSquare));
+//                System.out.println("tmpWeight: "+tmpWeight);
+                if(cntSquare==0.0 || weightSquare==0.0){
+                    resultSimInEachFile.add(0.0);
+                }
+                else{
+                    Double resultSim = tmpWeight/(Math.sqrt(cntSquare)*Math.sqrt(weightSquare));
+                    //System.out.println("resultSim: "+resultSim);
+                    resultSimInEachFile.add(resultSim); //Sim값
+                }
             }
         }
+
         Map<Integer,Double> tmpMap = new HashMap<Integer,Double>(); //Integer = fileIndex, Double = each file's weight
 
         for(int j=0;j<resultSimInEachFile.size();j++){
