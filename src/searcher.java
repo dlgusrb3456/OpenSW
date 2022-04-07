@@ -36,6 +36,8 @@ public class searcher {
         KeywordExtractor ke = new KeywordExtractor();
         KeywordList kl = ke.extractKeyword(findStr,true);
 
+        ArrayList<Double[]> findSim = new ArrayList<Double[]>();
+
         //test kkm
 //        for(int i=0;i<kl.size();i++){
 //            Keyword kw = kl.get(i);
@@ -45,50 +47,60 @@ public class searcher {
 
         for(int i=0;i<kl.size();i++){
             Keyword kwrd = kl.get(i);
-            if(hashs.containsKey(kwrd.getString())){
-                Map<Integer,Double> tmpMap = new HashMap<Integer,Double>(); //Integer = fileIndex, Double = each file's weight
+            if(hashs.containsKey(kwrd.getString())) {
+                Double[] tmpDoubleArr = new Double[6];
                 String[] tmpString = hashs.get(kwrd.getString()); //each file's weight, 0 to 4
-                for(int j=0;j<tmpString.length;j++){
-                    Double tmpDouble = Double.parseDouble(tmpString[j]);
-                    tmpDouble *= (double)kwrd.getCnt(); //change value to find top three weight file. (* new keyword weight)
-                    tmpMap.put(j,tmpDouble);
+                tmpDoubleArr[0] = (double) kwrd.getCnt();
+                for (int k = 1; k < 6; k++) {
+                    tmpDoubleArr[k] = Double.parseDouble(tmpString[k - 1]);
                 }
-                //current status: tmpMap have <file index, file weight> of key String
-                //to do: sort tmpMap to choose top three file index
-                List<Map.Entry<Integer,Double>> list_entries = new ArrayList<Map.Entry<Integer, Double>>(tmpMap.entrySet());
-                Collections.sort(list_entries, new Comparator<Map.Entry<Integer,Double>>(){
-
-                    @Override
-                    public int compare(Map.Entry<Integer, Double> o1, Map.Entry<Integer, Double> o2) {
-                        return o2.getValue().compareTo(o1.getValue());
-                    }
-                });
-                //check sort
-                int k=0;
-                String answer = "("+kwrd.getString()+") ";
-                for(Map.Entry<Integer,Double> entry: list_entries){
-                    if(k>=3){
-                        break;
-                    }
-                    k++;
-                    String title = getTitle(entry.getKey());
-                    if(entry.getValue() != 0.0){
-                        answer += Integer.toString(k)+"등:"+title+", 유사도: "+entry.getValue()+" / ";
-                    }
-
-                }
-                System.out.println(answer);
-
-
+                findSim.add(tmpDoubleArr);
             }
             else{
                 System.out.println("No "+kwrd.getString()+" word in files");
             }
 
         }
+        ArrayList<Double> resultSimInEachFile = new ArrayList<Double>();
 
+        if(findSim.size()>=0){
+            for(int i=1;i<findSim.get(0).length;i++){
+                Double tmpWeight = 0.0;
+                for(int j=0;j<findSim.size();j++){
+                    tmpWeight += findSim.get(j)[0]*findSim.get(j)[i];
+                }
+                resultSimInEachFile.add(tmpWeight);
+            }
+        }
+        Map<Integer,Double> tmpMap = new HashMap<Integer,Double>(); //Integer = fileIndex, Double = each file's weight
 
+        for(int j=0;j<resultSimInEachFile.size();j++){
+            tmpMap.put(j,resultSimInEachFile.get(j));
+        }
+        //current status: tmpMap have <file index, file weight> of key String
+        //to do: sort tmpMap to choose top three file index
+        List<Map.Entry<Integer,Double>> list_entries = new ArrayList<Map.Entry<Integer, Double>>(tmpMap.entrySet());
+        Collections.sort(list_entries, new Comparator<Map.Entry<Integer,Double>>(){
 
+            @Override
+            public int compare(Map.Entry<Integer, Double> o1, Map.Entry<Integer, Double> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+        int k=0;
+        String answer="";
+        for(Map.Entry<Integer,Double> entry: list_entries){
+            if(k>=3){
+                break;
+            }
+            k++;
+            String title = getTitle(entry.getKey());
+            if(entry.getValue() != 0.0){
+                answer += Integer.toString(k)+"등:"+title+", 유사도: "+entry.getValue()+" / ";
+            }
+
+        }
+        System.out.println(answer);
     }
 
     public String getTitle(int index) throws IOException {
