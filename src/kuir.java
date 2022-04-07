@@ -21,7 +21,7 @@ public class kuir {
         }
         else if(command.equals("-s")){  //java kuir -s ./index.post -q "라면에는 떡을 넣어야 맛있다"
             searcher sc = new searcher(path,args[5]);
-            sc.InnerProduct();
+            sc.CalcSim();
         }
         else {
             System.out.println("none");
