@@ -9,17 +9,17 @@ public class kuir {
         String command = args[2];// -i
         String path = args[3];
 
-        if(command.equals("-i")){ //config: java kuir -i ./src/index.xml
+        if(command.equals("-i")){ //config: java kuir -i ./index.xml
             indexer mII = new indexer(path);
             mII.mkHashMapFile();
-        } else if (command.equals("-k")) { //config: java kuir -k ./src/collection.xml
+        } else if (command.equals("-k")) { //config: java kuir -k ./collection.xml
             makeKeyword mK = new makeKeyword(path);
             mK.mkKeyword();
         }else if(command.equals("-c")){ //config: java kuir -c ./data
             makeCollection mC = new makeCollection(path);
             mC.mkCollecton();
         }
-        else if(command.equals("-s")){
+        else if(command.equals("-s")){  //java kuir -s ./index.post -q "라면에는 떡을 넣어야 맛있다"
             searcher sc = new searcher(path,args[5]);
             sc.InnerProduct();
         }
