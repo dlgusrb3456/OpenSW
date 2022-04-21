@@ -24,7 +24,9 @@ public class kuir {
             sc.CalcSim();
         }
         else if(command.equals("-m")){
-            System.out.println("test");
+
+
+            
             MidTerm midTerm = new MidTerm(path,args[5]);
             midTerm.showSnippet();
         }
