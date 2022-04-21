@@ -23,6 +23,11 @@ public class kuir {
             searcher sc = new searcher(path,args[5]);
             sc.CalcSim();
         }
+        else if(command.equals("-m")){
+            System.out.println("test");
+            MidTerm midTerm = new MidTerm(path,args[5]);
+            midTerm.showSnippet();
+        }
         else {
             System.out.println("none");
         }
