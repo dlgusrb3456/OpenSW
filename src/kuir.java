@@ -26,7 +26,7 @@ public class kuir {
         else if(command.equals("-m")){
 
 
-            
+
             MidTerm midTerm = new MidTerm(path,args[5]);
             midTerm.showSnippet();
         }
