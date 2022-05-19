@@ -24,7 +24,13 @@ public class kuir {
             sc.CalcSim();
         }
         else if(command.equals("-m")){
+<<<<<<< HEAD
             
+=======
+
+
+
+>>>>>>> eb7b40381cf5ac23a3133e4eb39584cd27c0ed3b
             MidTerm midTerm = new MidTerm(path,args[5]);
             midTerm.showSnippet();
         }
